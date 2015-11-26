@@ -9,19 +9,20 @@
             <form method = "post" action="/completed">
             <form id="myForm">
                 <h2>Amherst Social Clubs</h2>
-                <p>Welcome! Fill out this survey, and on Valentine's day, you'll be sent an email matching you with your top 3 true loves, based on real science!</p>
+                <center style = "margin-left: -30px">Please fill out this form to be placed in an Amherst Social Club</center>
                 <br>
-                <div id="test">
                     <h4>Full name: <input class="participant" type="text" name="name"></h4>
-                    <h4>Amherst email: <input class="participant" type="text" name="email" placeholder = "Ex: jdoe18@amherst.edu"></h4>
-                    <h4>Phone number: (optional): <input class="participant" type="text" name="phone"></h4>
+                    <h4>AMHERST email: <input class="participant" type="text" name="email" placeholder = "Ex: jdoe18@amherst.edu"></h4>
                     <h4>Class:</h4>
-                    <ul style="list-style-type: none;">
-                    <li><input type="radio" name="class" value="2018" checked="checked">  2018<br></li>
-                    <li><input type="radio" name="class" value="2017">  2017<br></li>
-                    <li><input type="radio" name="class" value="2016">  2016<br></li>
-                    <li><input type="radio" name="class" value="2015">  2015<br></li>
-                    </ul>
+                    $(document).ready(function() {
+                    $(".js-example-basic-single").select2();
+                    });
+                     
+                    <select class="js-example-basic-single">
+                      <option value="AL">Alabama</option>
+                      <option value="WY">Wyoming</option>
+                    </select>
+                    
                     <h4>I identify as a...</h4>         <!-- questions written in h4-->
                     <ul style="list-style-type: none;">
                     <li><input type="radio" name="gender" value="male">  Male<br></li>
@@ -34,7 +35,6 @@
                     <li><input type="checkbox" name="seeking" value="female">  Female<br></li>
                     <li><input type="checkbox" name="seeking" value="non-binary">  Non-binary<br></li>
                     </ul>
-                </div>
                 <div>
                     <h4>1. On a Friday night, you can find me:</h4>
                     <ul style="list-style-type: none;">
