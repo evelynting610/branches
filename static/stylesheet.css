@@ -1,0 +1,54 @@
+*{
+    background-color: #d8d8d8;
+}
+
+body {
+    width: 800px;
+    margin: auto;
+    font-size: 100%;
+}
+
+body *{
+    background-color: #ffffff;
+}
+
+h2{
+	width: 40%;
+    font-family: serif;
+    font-weight: bold;
+    border: 2px solid #207cca;
+    border-radius: 20px;
+    padding: 40px 20px;
+    background-color: #85ADFF;
+    text-align: center;
+}
+
+form {
+        padding: 20px 0px 50px 50px;
+        width: 750px;
+        height: auto;
+        margin: auto;
+}
+
+form h2{
+    margin: 20px auto;
+    margin-right: 228px;
+}
+
+h4{
+    font-family: serif;
+    color: #5C8AE6;
+}
+
+.participant {
+        width: 300px;
+        margin: 0px;
+}
+
+.submit {
+    width: 100px;
+}
+
+.clear {
+    width: 100px;
+}
