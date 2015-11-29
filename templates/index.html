@@ -6,6 +6,7 @@
     <link href="../static/select2.min.css" rel="stylesheet"/>
     <link rel=stylesheet type=text/css href="../static/stylesheet.css">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <script src="../static/rank.js"></script>
     <script src="../static/select2.min.js"></script>
     </head>
         <body>
@@ -32,18 +33,90 @@
                           <option value="3">Nonbinary</option>
                         </select>
                     </h4>
-                    <h4> Top Club You're In: &nbsp;&nbsp;&nbsp;&nbsp;
-                        <select class="js-example-basic-single">
+                    <h4> Top Clubs You Are In &nbsp;&nbsp;&nbsp;&nbsp;
+                        1)<select class="js-example-basic-single">
+                          <option value="AL">Alabama</option>
+                          <option value="WY">Wyoming</option>
+                        </select>&nbsp;&nbsp;&nbsp;&nbsp;
+                        2)<select class="js-example-basic-single">
                           <option value="AL">Alabama</option>
                           <option value="WY">Wyoming</option>
                         </select>
                     </h4>
-                    <input type="submit" value="Submit">
+                    <br>
+                <h4>Rank your Club Preferences by clicking the blue buttons</h4>
+                <div class = "rankContainer">
+                  <div class = "rankElement" id = "el0">
+                    <input type="hidden" name="0">
+                    <font class = "rankDisp" id = "el0">1</font>
+                    &nbsp;&nbsp;&nbsp;
+                    Bronze
+                    <b class = "down">&nbsp;V</b>
+                    <b class = "up">&#923;&nbsp;</b>
+                  </div>
+                  <div class = "rankElement" id = "el1">
+                    <input type="hidden" name="1">
+                    <font class = "rankDisp" id = "el1">2</font>
+                    &nbsp;&nbsp;&nbsp;
+                    Platinum
+                    <b class = "down">&nbsp;V</b>
+                    <b class = "up">&#923;&nbsp;</b>
+                  </div>
+                  <div class = "rankElement" id = "el2">
+                    <input type="hidden" name="2">
+                    <font class = "rankDisp" id = "el2">3</font>
+                    &nbsp;&nbsp;&nbsp;
+                    Gold
+                    <b class = "down">&nbsp;V</b>
+                    <b class = "up">&#923;&nbsp;</b>
+                  </div>
+                  <div class = "rankElement" id = "el3">
+                    <input type="hidden" name="3">
+                    <font class = "rankDisp" id = "el3">4</font>
+                    &nbsp;&nbsp;&nbsp;
+                    Silver
+                    <b class = "down">&nbsp;V</b>
+                    <b class = "up">&#923;&nbsp;</b>
+                  </div>
+                  <div class = "rankElement" id = "el4">
+                    <input type="hidden" name="4">
+                    <font class = "rankDisp" id = "el4">5</font>
+                    &nbsp;&nbsp;&nbsp;
+                    Diamond
+                    <b class = "down">&nbsp;V</b>
+                    <b class = "up">&#923;&nbsp;</b>
+                  </div>
                 </div>
+                <br>
+                <h4>Group Code(if you have one) <input class="code" type="text" name="code"></h4>
+                <br><br>
+                <input type="submit" value="Submit">
                 </form>
             
         <script>$(document).ready(function() {
-        $(".js-example-basic-single").select2();
-        });</script>           
+        $(".js-example-basic-single").select2()
+        });
+        $(document).ready(function(){
+        // initialize
+        var distance = $(".rankElement").css("height");
+        distance = parseFloat(distance.substr(0,(distance.length - 2))) + 9; // distance to move when changing rank
+        var ranksIds = new Array();
+        var idsRanks = new Array();
+        var idsPoss = new Array();
+        for (var i = 0; i < $(".rankElement").length; i++)
+        { ranksIds[i] = i;
+          idsRanks[i] = i;
+          idsPoss[i] = 0;
+
+          // initialize the form input values in case the browser cached them
+          $("input[name='"+i+"']").attr("value",idsRanks[i]);
+          $("font.rankDisp#el"+i).html(i+1);
+        }
+
+        // Connect the up/down buttons to their functions
+          $(".up").on("click",function(){rankChange(1, $(this).parent(), distance, ranksIds, idsRanks, idsPoss)});
+          $(".down").on("click",function(){rankChange(-1, $(this).parent(), distance, ranksIds, idsRanks, idsPoss)});
+        });
+        </script>           
         </body>
 </html>

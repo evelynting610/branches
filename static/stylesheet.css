@@ -45,10 +45,63 @@ h4{
         margin: 0px;
 }
 
+.code {
+        width: 150px;
+        margin: 0px;
+}
+
 .submit {
     width: 100px;
 }
 
 .clear {
     width: 100px;
+}
+
+/* up button */
+b.up
+{
+font-family: "Arial", Helvetica, sans-serif;
+cursor: pointer;
+float: right;
+}
+b.up:hover {color: black;}
+
+/* down button */
+b.down
+{
+font-family: "Arial", Helvetica, sans-serif;
+cursor: pointer;
+float: right;
+}
+b.down:hover {color: black;}
+
+/* shows the rank of the element */
+font.rankDisp
+{
+position: absolute;
+color: #000000;
+font-weight: bold;
+}
+
+/* Container div for Rank, HTML form rank selector */
+.rankContainer
+{
+margin-left: 70px;
+position: relative;
+width: 300px; height: auto;
+}
+
+/* Rankable element div for Rank, HTML form rank  */
+.rankElement
+{
+position: relative;
+width: 400px; height: auto;
+margin: 0px;
+padding: 3px;
+color: #000000;
+border: 1px solid #85ADFF;
+}
+.rankElement b{
+    color: #85ADFF;
 }
