@@ -2,49 +2,690 @@
 <html>
     
     <head>
-    <title>Amherst Social Clubs</title>
-    <link href="../static/select2.min.css" rel="stylesheet"/>
+    <title>AC Social Clubs</title>
     <link rel=stylesheet type=text/css href="../static/stylesheet.css">
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
-    <script src="../static/rank.js"></script>
+    <link href="../static/select2.min.css" rel="stylesheet"/>
+    <script src="../static/jquery-2.1.4.js"></script>
     <script src="../static/select2.min.js"></script>
+    <script>
+      function validateForm() {
+          var grade = document.forms["socialClubsForm"]["class"].value;
+          if(grade==-1){
+            alert("Please fill in your Class");
+            return false;
+          }
+          var gender = document.forms["socialClubsForm"]["gender"].value;
+            if(gender==-1){
+              alert("Please fill in your Gender");
+              return false;
+            }
+
+          var ec1 = document.forms["socialClubsForm"]["ec1"].value;
+          var ec2 = document.forms["socialClubsForm"]["ec2"].value;
+          if(ec1!=-1 && ec1==ec2){
+            alert("Please pick two DIFFERENT clubs");
+            return false;
+          }
+          var captainEmail = document.forms["socialClubsForm"]["captain"].value;
+          if(captainEmail!=""){
+            var start = captainEmail.length-11;
+            console.log(captainEmail.substring(start, captainEmail.length));
+            if (captainEmail.substring(start, captainEmail.length)!="amherst.edu") {
+                alert("Captain email must be a valid AMHERST email");
+                return false;
+            }
+          }
+      }
+    </script> 
     </head>
         <body>
-            <form method = "post" action="/completed">
-            <form id="myForm">
-                <h2>Amherst Social Clubs</h2>
-                <center style = "margin-left: -30px">Please fill out this form to be placed in an Amherst Social Club</center>
+            <form name= "socialClubsForm" action="/completed" onsubmit="return validateForm()" method = "post">
+                <h2>Social Club Sorting Hat</h2>
                 <br>
+                  <p style = "color: red">{{error_message}}</p>
                     <h4>Full name: <input class="participant" type="text" name="name"></h4>
-                    <h4>AMHERST email: <input class="participant" type="text" name="email" placeholder = "jdoe18@amherst.edu"></h4>
-                    <h4>Class:&nbsp;&nbsp;&nbsp;&nbsp;   
-                        <select class="js-example-basic-single">
-                          <option value="2016">2016 or 2016E</option>
-                          <option value="2017">2017 or 2017E</option>
-                          <option value="2018">2018 or 2018E</option>
-                          <option value="2019">2019 or 2019E</option>
+                    <!--<h4>Email: <input class="participant" type="text" name="email" value = "{{ request.environ.get('mail') }}" readonly="readonly"></h4>-->
+                    <h4>Email: <input class="participant" type="text" name="email"></h4>
+                    <h4>Class Of:&nbsp;&nbsp;&nbsp;&nbsp;   
+                        <select name = "class" class="js-example-basic-single">
+                          <option value=-1></option>
+                          <option value=1 >2016 or 2017E</option>
+                          <option value=0 >2017 or 2018E</option>
+                          <option value=3 >2018 or 2019E</option>
+                          <option value=2 >2019</option>
                         </select>
                     </h4>
 
                     <h4>Gender:&nbsp;&nbsp;&nbsp;&nbsp;   
-                        <select class="js-example-basic-single">
-                          <option value="1">Woman</option>
-                          <option value="2">Man</option>
-                          <option value="3">Nonbinary</option>
+                        <select name = "gender"class="js-example-basic-single">
+                          <option value =-1></option>
+                          <option value= 0 >Woman</option>
+                          <option value= 2 >Man</option>
+                          <option value= 1 >Nonbinary</option>
                         </select>
                     </h4>
-                    <h4> Top Clubs You Are In &nbsp;&nbsp;&nbsp;&nbsp;
-                        1)<select class="js-example-basic-single">
-                          <option value="OR">Orchestra</option>
-                          <option value="BK">BasketBall</option>
+                    <h4> Top Extra-Curriculars You Are In &nbsp;&nbsp;&nbsp;&nbsp;
+                        1) <select style = "width: 20%"  name = "ec1" class="js-example-basic-single">
+                          <option value=-1>None</option>
+                          <option value=0>Baseball
+                          </option>
+                          <option value=1>Basketball
+                          </option>
+                          <option value=2>Cross Country
+                          </option>
+                          <option value=3>Field Hockey
+                          </option>
+                          <option value=4>Football
+                          </option>
+                          <option value=5>Golf
+                          </option>
+                          <option value=6>Ice Hockey
+                          </option>
+                          <option value=7>Lacrosse
+                          </option>
+                          <option value=8>Soccer
+                          </option>
+                          <option value=9>Softball
+                          </option>
+                          <option value=10>Squash
+                          </option>
+                          <option value=11>Swimming & Diving
+                          </option>
+                          <option value=12>Tennis
+                          </option>
+                          <option value=13>Track & Field
+                          </option>
+                          <option value=14>Volleyball
+                          </option>
+                          <option value=15>AC Philosophy Club
+                          </option>
+                          <option value=16>3D
+                          </option>
+                          <option value=17>ABC (A Better Chance) Tutoring
+                          </option>
+                          <option value=18>Ac News
+                          </option>
+                          <option value=19>ACVoice
+                          </option>
+                          <option value=20>Adventist Christians Together to Serve
+                          </option>
+                          <option value=21>African & Caribbean Students Union
+                          </option>
+                          <option value=22>Alphorn Club
+                          </option>
+                          <option value=23>Amherst's Premier Baking Club
+                          </option>
+                          <option value=24>Amnesty International
+                          </option>
+                          <option value=25>Anime Club
+                          </option>
+                          <option value=26>Argentine Tango
+                          </option>
+                          <option value=27>Arting Club
+                          </option>
+                          <option value=28>Asian Students Association
+                          </option>
+                          <option value=29>Association of Amherst Students
+                          </option>
+                          <option value=30>Athletes and Allies
+                          </option>
+                          <option value=31>Badminton Team
+                          </option>
+                          <option value=32>Between the Lines: a Book Club for Men
+                          </option>
+                          <option value=33>Big Brothers Big Sisters
+                          </option>
+                          <option value=34>Black Student Union
+                          </option>
+                          <option value=35>Bluestockings
+                          </option>
+                          <option value=36>Charles Drew Health Professions Society
+                          </option>
+                          <option value=37>Chess Club
+                          </option>
+                          <option value=38>Choral Society
+                          </option>
+                          <option value=39>Christian Fellowship
+                          </option>
+                          <option value=40>Circus
+                          </option>
+                          <option value=41>Club Soccer
+                          </option>
+                          <option value=42>Coffee Club
+                          </option>
+                          <option value=43>Cold Club
+                          </option>
+                          <option value=44>Colleges Against Cancer
+                          </option>
+                          <option value=45>Computer Science Club
+                          </option>
+                          <option value=46>Consulting Group
+                          </option>
+                          <option value=47>Cricket Club
+                          </option>
+                          <option value=48>Culinary Club (ACC)
+                          </option>
+                          <option value=49>Dance
+                          </option>
+                          <option value=50>Dancing & Stepping at Amherst College (DASAC)
+                          </option>
+                          <option value=51>Debate Society
+                          </option>
+                          <option value=52>DQ
+                          </option>
+                          <option value=53>Electronics
+                          </option>
+                          <option value=54>Emergency Medical Service
+                          </option>
+                          <option value=55>Entrepreneurship Society
+                          </option>
+                          <option value=56>Equity Research Club
+                          </option>
+                          <option value=57>Fencing Club
+                          </option>
+                          <option value=58>Film Society
+                          </option>
+                          <option value=59>First Generation Association
+                          </option>
+                          <option value=60>Freestyle Dance Project
+                          </option>
+                          <option value=61>Friends of Book & Plow Farm
+                          </option>
+                          <option value=62>Girls Inc. of Holyoke
+                          </option>
+                          <option value=63>GlobeMed
+                          </option>
+                          <option value=64>Gospel Choir
+                          </option>
+                          <option value=65>Gouda Vibrations
+                          </option>
+                          <option value=66>Green Amherst Project
+                          </option>
+                          <option value=67>Habitat for Humanity
+                          </option>
+                          <option value=68>Hello
+                          </option>
+                          <option value=69>HerCampus Amherst
+                          </option>
+                          <option value=70>Hillel
+                          </option>
+                          <option value=71>Hip-Hop Club
+                          </option>
+                          <option value=72>Historical European Martial Arts Club
+                          </option>
+                          <option value=73>Homeless Connect
+                          </option>
+                          <option value=74>Hooked on Aquaponics
+                          </option>
+                          <option value=75>Improv Club
+                          </option>
+                          <option value=76>International Student's Association
+                          </option>
+                          <option value=77>Juggling Club
+                          </option>
+                          <option value=78>Kidney Disease Screening and Awareness Program (kdsap)
+                          </option>
+                          <option value=79>Korean Students Association (KSA)
+                          </option>
+                          <option value=80>La Causa of Amherst College
+                          </option>
+                          <option value=81>Liberty in North Korea
+                          </option>
+                          <option value=82>Mead Student Docents
+                          </option>
+                          <option value=83>Men's Ultimate Frisbee Army of Darkness
+                          </option>
+                          <option value=84>Middle East Studies & Student Association (messa)
+                          </option>
+                          <option value=85>Military Support Corps
+                          </option>
+                          <option value=86>Mixed Martial Arts Organization (AMMO)
+                          </option>
+                          <option value=87>Mock Trial
+                          </option>
+                          <option value=88>Model United Nations
+                          </option>
+                          <option value=89>Mountain Bike Intercollegiate RaceTeam (AMBIR)
+                          </option>
+                          <option value=90>Mr. Gad's House of Improv
+                          </option>
+                          <option value=91>Much Ado About Knitting
+                          </option>
+                          <option value=92>Multifaith Council
+                          </option>
+                          <option value=93>Muslim Students Organization
+                          </option>
+                          <option value=94>Native American Students Organization
+                          </option>
+                          <option value=95>Newman Catholic Students Association
+                          </option>
+                          <option value=96>OLIO
+                          </option>
+                          <option value=97>Outing Club
+                          </option>
+                          <option value=98>Partners for Animal Welfare
+                          </option>
+                          <option value=99>Poker Club
+                          </option>
+                          <option value=100>Political Union
+                          </option>
+                          <option value=101>Pre-Business Group
+                          </option>
+                          <option value=102>Pre-Law Society
+                          </option>
+                          <option value=103>Pride Alliance
+                          </option>
+                          <option value=104>Project Sunshine
+                          </option>
+                          <option value=105>ProjectSALUD
+                          </option>
+                          <option value=106>Public Health Collaborative
+                          </option>
+                          <option value=107>Purple Pride
+                          </option>
+                          <option value=108>Quiz Bowl
+                          </option>
+                          <option value=109>Random Acts of Kindness
+                          </option>
+                          <option value=110>Reader to Reader, Inc.
+                          </option>
+                          <option value=111>Remnant
+                          </option>
+                          <option value=112>Republicans
+                          </option>
+                          <option value=113>Responsible Endowment Coalition
+                          </option>
+                          <option value=114>Rhythm & Shoes
+                          </option>
+                          <option value=115>Riding Club (Equestrian Team)
+                          </option>
+                          <option value=116>Roosevelt Institution
+                          </option>
+                          <option value=117>Route 9
+                          </option>
+                          <option value=118>Rowing Association
+                          </option>
+                          <option value=119>Rugby Football Club
+                          </option>
+                          <option value=120>Sabrinas
+                          </option>
+                          <option value=121>Ski Team
+                          </option>
+                          <option value=122>Soka Buddhist Club
+                          </option>
+                          <option value=123>Soul
+                          </option>
+                          <option value=124>South Asian Students Association (SASA)
+                          </option>
+                          <option value=125>Sparkle Motion Women's Ultimate
+                          </option>
+                          <option value=126>Splash! At Amherst College
+                          </option>
+                          <option value=127>Swing & Ballroom Dance Club
+                          </option>
+                          <option value=128>Table Tennis Club
+                          </option>
+                          <option value=129>The Amherst Element
+                          </option>
+                          <option value=130>The Amherst Student
+                          </option>
+                          <option value=131>The Design Club
+                          </option>
+                          <option value=132>The EDU
+                          </option>
+                          <option value=133>The Indicator
+                          </option>
+                          <option value=134>The Option
+                          </option>
+                          <option value=135>The Running Network
+                          </option>
+                          <option value=136>The Traditional Games Club
+                          </option>
+                          <option value=137>Theatrical Choreography Club
+                          </option>
+                          <option value=138>To Write Love on Her Arms Amherst
+                          </option>
+                          <option value=139>Undergraduate Law Review
+                          </option>
+                          <option value=140>United Left
+                          </option>
+                          <option value=141>Universal Music Organization
+                          </option>
+                          <option value=142>UWC Club
+                          </option>
+                          <option value=143>Vela Scholars
+                          </option>
+                          <option value=144>WAMH
+                          </option>
+                          <option value=145>Water Polo
+                          </option>
+                          <option value=146>Whistle a Happy Tune
+                          </option>
+                          <option value=147>Women in Technology and Science (wits)
+                          </option>
+                          <option value=148>Women's Club Soccer
+                          </option>
+                          <option value=149>Women's Rugby Football Club
+                          </option>
+                          <option value=150>World Read
+                          </option>
+                          <option value=151>Yoga Club
+                          </option>
+                          <option value=152>Zumbyes</option>
+
                         </select>&nbsp;&nbsp;&nbsp;&nbsp;
-                        2)<select class="js-example-basic-single">
-                          <option value="OR">Orchestra</option>
-                          <option value="BK">BasketBall</option>
+
+                        2) <select style = "width: 20%" name = "ec2" class="js-example-basic-single">
+                         <option value=-1>None</option>
+                         <option value=0>Baseball
+                          </option>
+                          <option value=1>Basketball
+                          </option>
+                          <option value=2>Cross Country
+                          </option>
+                          <option value=3>Field Hockey
+                          </option>
+                          <option value=4>Football
+                          </option>
+                          <option value=5>Golf
+                          </option>
+                          <option value=6>Ice Hockey
+                          </option>
+                          <option value=7>Lacrosse
+                          </option>
+                          <option value=8>Soccer
+                          </option>
+                          <option value=9>Softball
+                          </option>
+                          <option value=10>Squash
+                          </option>
+                          <option value=11>Swimming & Diving
+                          </option>
+                          <option value=12>Tennis
+                          </option>
+                          <option value=13>Track & Field
+                          </option>
+                          <option value=14>Volleyball
+                          </option>
+                          <option value=15>AC Philosophy Club
+                          </option>
+                          <option value=16>3D
+                          </option>
+                          <option value=17>ABC (A Better Chance) Tutoring
+                          </option>
+                          <option value=18>Ac News
+                          </option>
+                          <option value=19>ACVoice
+                          </option>
+                          <option value=20>Adventist Christians Together to Serve
+                          </option>
+                          <option value=21>African & Caribbean Students Union
+                          </option>
+                          <option value=22>Alphorn Club
+                          </option>
+                          <option value=23>Amherst's Premier Baking Club
+                          </option>
+                          <option value=24>Amnesty International
+                          </option>
+                          <option value=25>Anime Club
+                          </option>
+                          <option value=26>Argentine Tango
+                          </option>
+                          <option value=27>Arting Club
+                          </option>
+                          <option value=28>Asian Students Association
+                          </option>
+                          <option value=29>Association of Amherst Students
+                          </option>
+                          <option value=30>Athletes and Allies
+                          </option>
+                          <option value=31>Badminton Team
+                          </option>
+                          <option value=32>Between the Lines: a Book Club for Men
+                          </option>
+                          <option value=33>Big Brothers Big Sisters
+                          </option>
+                          <option value=34>Black Student Union
+                          </option>
+                          <option value=35>Bluestockings
+                          </option>
+                          <option value=36>Charles Drew Health Professions Society
+                          </option>
+                          <option value=37>Chess Club
+                          </option>
+                          <option value=38>Choral Society
+                          </option>
+                          <option value=39>Christian Fellowship
+                          </option>
+                          <option value=40>Circus
+                          </option>
+                          <option value=41>Club Soccer
+                          </option>
+                          <option value=42>Coffee Club
+                          </option>
+                          <option value=43>Cold Club
+                          </option>
+                          <option value=44>Colleges Against Cancer
+                          </option>
+                          <option value=45>Computer Science Club
+                          </option>
+                          <option value=46>Consulting Group
+                          </option>
+                          <option value=47>Cricket Club
+                          </option>
+                          <option value=48>Culinary Club (ACC)
+                          </option>
+                          <option value=49>Dance
+                          </option>
+                          <option value=50>Dancing & Stepping at Amherst College (DASAC)
+                          </option>
+                          <option value=51>Debate Society
+                          </option>
+                          <option value=52>DQ
+                          </option>
+                          <option value=53>Electronics
+                          </option>
+                          <option value=54>Emergency Medical Service
+                          </option>
+                          <option value=55>Entrepreneurship Society
+                          </option>
+                          <option value=56>Equity Research Club
+                          </option>
+                          <option value=57>Fencing Club
+                          </option>
+                          <option value=58>Film Society
+                          </option>
+                          <option value=59>First Generation Association
+                          </option>
+                          <option value=60>Freestyle Dance Project
+                          </option>
+                          <option value=61>Friends of Book & Plow Farm
+                          </option>
+                          <option value=62>Girls Inc. of Holyoke
+                          </option>
+                          <option value=63>GlobeMed
+                          </option>
+                          <option value=64>Gospel Choir
+                          </option>
+                          <option value=65>Gouda Vibrations
+                          </option>
+                          <option value=66>Green Amherst Project
+                          </option>
+                          <option value=67>Habitat for Humanity
+                          </option>
+                          <option value=68>Hello
+                          </option>
+                          <option value=69>HerCampus Amherst
+                          </option>
+                          <option value=70>Hillel
+                          </option>
+                          <option value=71>Hip-Hop Club
+                          </option>
+                          <option value=72>Historical European Martial Arts Club
+                          </option>
+                          <option value=73>Homeless Connect
+                          </option>
+                          <option value=74>Hooked on Aquaponics
+                          </option>
+                          <option value=75>Improv Club
+                          </option>
+                          <option value=76>International Student's Association
+                          </option>
+                          <option value=77>Juggling Club
+                          </option>
+                          <option value=78>Kidney Disease Screening and Awareness Program (kdsap)
+                          </option>
+                          <option value=79>Korean Students Association (KSA)
+                          </option>
+                          <option value=80>La Causa of Amherst College
+                          </option>
+                          <option value=81>Liberty in North Korea
+                          </option>
+                          <option value=82>Mead Student Docents
+                          </option>
+                          <option value=83>Men's Ultimate Frisbee Army of Darkness
+                          </option>
+                          <option value=84>Middle East Studies & Student Association (messa)
+                          </option>
+                          <option value=85>Military Support Corps
+                          </option>
+                          <option value=86>Mixed Martial Arts Organization (AMMO)
+                          </option>
+                          <option value=87>Mock Trial
+                          </option>
+                          <option value=88>Model United Nations
+                          </option>
+                          <option value=89>Mountain Bike Intercollegiate RaceTeam (AMBIR)
+                          </option>
+                          <option value=90>Mr. Gad's House of Improv
+                          </option>
+                          <option value=91>Much Ado About Knitting
+                          </option>
+                          <option value=92>Multifaith Council
+                          </option>
+                          <option value=93>Muslim Students Organization
+                          </option>
+                          <option value=94>Native American Students Organization
+                          </option>
+                          <option value=95>Newman Catholic Students Association
+                          </option>
+                          <option value=96>OLIO
+                          </option>
+                          <option value=97>Outing Club
+                          </option>
+                          <option value=98>Partners for Animal Welfare
+                          </option>
+                          <option value=99>Poker Club
+                          </option>
+                          <option value=100>Political Union
+                          </option>
+                          <option value=101>Pre-Business Group
+                          </option>
+                          <option value=102>Pre-Law Society
+                          </option>
+                          <option value=103>Pride Alliance
+                          </option>
+                          <option value=104>Project Sunshine
+                          </option>
+                          <option value=105>ProjectSALUD
+                          </option>
+                          <option value=106>Public Health Collaborative
+                          </option>
+                          <option value=107>Purple Pride
+                          </option>
+                          <option value=108>Quiz Bowl
+                          </option>
+                          <option value=109>Random Acts of Kindness
+                          </option>
+                          <option value=110>Reader to Reader, Inc.
+                          </option>
+                          <option value=111>Remnant
+                          </option>
+                          <option value=112>Republicans
+                          </option>
+                          <option value=113>Responsible Endowment Coalition
+                          </option>
+                          <option value=114>Rhythm & Shoes
+                          </option>
+                          <option value=115>Riding Club (Equestrian Team)
+                          </option>
+                          <option value=116>Roosevelt Institution
+                          </option>
+                          <option value=117>Route 9
+                          </option>
+                          <option value=118>Rowing Association
+                          </option>
+                          <option value=119>Rugby Football Club
+                          </option>
+                          <option value=120>Sabrinas
+                          </option>
+                          <option value=121>Ski Team
+                          </option>
+                          <option value=122>Soka Buddhist Club
+                          </option>
+                          <option value=123>Soul
+                          </option>
+                          <option value=124>South Asian Students Association (SASA)
+                          </option>
+                          <option value=125>Sparkle Motion Women's Ultimate
+                          </option>
+                          <option value=126>Splash! At Amherst College
+                          </option>
+                          <option value=127>Swing & Ballroom Dance Club
+                          </option>
+                          <option value=128>Table Tennis Club
+                          </option>
+                          <option value=129>The Amherst Element
+                          </option>
+                          <option value=130>The Amherst Student
+                          </option>
+                          <option value=131>The Design Club
+                          </option>
+                          <option value=132>The EDU
+                          </option>
+                          <option value=133>The Indicator
+                          </option>
+                          <option value=134>The Option
+                          </option>
+                          <option value=135>The Running Network
+                          </option>
+                          <option value=136>The Traditional Games Club
+                          </option>
+                          <option value=137>Theatrical Choreography Club
+                          </option>
+                          <option value=138>To Write Love on Her Arms Amherst
+                          </option>
+                          <option value=139>Undergraduate Law Review
+                          </option>
+                          <option value=140>United Left
+                          </option>
+                          <option value=141>Universal Music Organization
+                          </option>
+                          <option value=142>UWC Club
+                          </option>
+                          <option value=143>Vela Scholars
+                          </option>
+                          <option value=144>WAMH
+                          </option>
+                          <option value=145>Water Polo
+                          </option>
+                          <option value=146>Whistle a Happy Tune
+                          </option>
+                          <option value=147>Women in Technology and Science (wits)
+                          </option>
+                          <option value=148>Women's Club Soccer
+                          </option>
+                          <option value=149>Women's Rugby Football Club
+                          </option>
+                          <option value=150>World Read
+                          </option>
+                          <option value=151>Yoga Club
+                          </option>
+                          <option value=152>Zumbyes</option>
                         </select>
                     </h4>
                     <br>
-                <h4>Rank your Club Preferences by clicking the blue buttons</h4>
+                <h4>Rank your Club Preferences by clicking the Blue Arrows</h4>
                 <div class = "rankContainer">
                   <div class = "rankElement" id = "el0">
                     <input type="hidden" name="0">
@@ -70,51 +711,111 @@
                     <b class = "down">&nbsp;V</b>
                     <b class = "up">&#923;&nbsp;</b>
                   </div>
-                  <div class = "rankElement" id = "el3">
-                    <input type="hidden" name="3">
-                    <font class = "rankDisp" id = "el3">4</font>
-                    &nbsp;&nbsp;&nbsp;
-                    Club 4
-                    <b class = "down">&nbsp;V</b>
-                    <b class = "up">&#923;&nbsp;</b>
-                  </div>
-                  <div class = "rankElement" id = "el4">
-                    <input type="hidden" name="4">
-                    <font class = "rankDisp" id = "el4">5</font>
-                    &nbsp;&nbsp;&nbsp;
-                    Club 5
-                    <b class = "down">&nbsp;V</b>
-                    <b class = "up">&#923;&nbsp;</b>
-                  </div>
                 </div>
                 <br>
-                <h4>Group Code(if you have one) <input class="code" type="text" name="code"></h4>
+                <h4>Amherst Email of Group Captain <input class="code" type="text" name="captain"></h4>
                 <br><br>
-                <input type="submit" value="Submit">
+                <input style = "width: 20%; border: 2px solid #85ADFF; font-size: 1em; color: #85ADFF; font-weight: bold" type="submit" value="Submit">
                 </form>
-            
-        <script>$(document).ready(function() {
-        $(".js-example-basic-single").select2()
-        });
+                <br><br><br>
+
+        <script>
         $(document).ready(function(){
         // initialize
-        var distance = $(".rankElement").css("height");
-        distance = parseFloat(distance.substr(0,(distance.length - 2))) + 9; // distance to move when changing rank
-        var ranksIds = new Array();
-        var idsRanks = new Array();
-        var idsPoss = new Array();
+        var dist = $(".rankElement").css("height");
+        dist = parseFloat(dist.substr(0,(dist.length - 2))) + 9; // distance to move when changing rank
+        var rIds = new Array();
+        var iRanks = new Array();
+        var iPoss = new Array();
         for (var i = 0; i < $(".rankElement").length; i++)
-        { ranksIds[i] = i;
-          idsRanks[i] = i;
-          idsPoss[i] = 0;
+        { rIds[i] = i;
+          iRanks[i] = i;
+          iPoss[i] = 0;
           // initialize the form input values in case the browser cached them
-          $("input[name='"+i+"']").attr("value",idsRanks[i]);
+          $("input[name='"+i+"']").attr("value",iRanks[i]);
           $("font.rankDisp#el"+i).html(i+1);
         }
+        var speed = 0.5 * 1000;
         // Connect the up/down buttons to their functions
-          $(".up").on("click",function(){rankChange(1, $(this).parent(), distance, ranksIds, idsRanks, idsPoss)});
-          $(".down").on("click",function(){rankChange(-1, $(this).parent(), distance, ranksIds, idsRanks, idsPoss)});
+          $(".up").on("click",function(){
+            var dir =1;
+            var element = $(this).parent();
+            var distance =dist;
+            var ranksIds = rIds;
+            var idsRanks = iRanks;
+            var idsPoss = iPoss;
+            var id = $(element).attr("id");
+            id = parseFloat(id.substring(2,id.length)); // remove the "el"
+            var idDisp = parseFloat(ranksIds[idsRanks[id] - dir]);
+            distance = distance * dir;
+
+            // if we're not trying to move it too high/low
+            if (((idsRanks[id] < (ranksIds.length - 1)) && (dir == -1)) || ((idsRanks[id] > 0) && (dir == 1)))
+            { // move the clicked one down in the variables
+              idsRanks[id] = idsRanks[id] - dir;
+              ranksIds[idsRanks[id]] = id;
+              idsPoss[id] = idsPoss[id] - distance;
+
+              // move the displaced one up in the variables   
+              idsRanks[idDisp] = idsRanks[id] + dir;
+              ranksIds[idsRanks[id] + dir] = idDisp;
+              idsPoss[idDisp] = idsPoss[idDisp] + distance;
+
+              // change the form input values
+              $("input[name='"+id+"']").attr("value",idsRanks[id]);
+              $("input[name='"+idDisp+"']").attr("value",idsRanks[idDisp]);
+
+              // change the rank display number
+              $("font.rankDisp#el"+id).html(idsRanks[id]+1);
+              $("font.rankDisp#el"+idDisp).html(idsRanks[idDisp]+1);
+
+              // move them physically
+              $(".rankElement#el"+id).animate({top:idsPoss[id]+"px"},speed);
+              $(".rankElement#el"+idDisp).animate({top:idsPoss[idDisp]+"px"},speed);
+            }
+            });
+            $(".down").on("click",function(){
+              var dir = -1;
+              var element = $(this).parent();
+              var distance =dist;
+              var ranksIds = rIds;
+              var idsRanks = iRanks;
+              var idsPoss = iPoss;
+
+              var id = $(element).attr("id");
+              id = parseFloat(id.substring(2,id.length)); // remove the "el"
+              var idDisp = parseFloat(ranksIds[idsRanks[id] - dir]);
+              distance = distance * dir;
+
+              // if we're not trying to move it too high/low
+              if (((idsRanks[id] < (ranksIds.length - 1)) && (dir == -1)) || ((idsRanks[id] > 0) && (dir == 1)))
+              { // move the clicked one down in the variables
+                idsRanks[id] = idsRanks[id] - dir;
+                ranksIds[idsRanks[id]] = id;
+                idsPoss[id] = idsPoss[id] - distance;
+
+                // move the displaced one up in the variables   
+                idsRanks[idDisp] = idsRanks[id] + dir;
+                ranksIds[idsRanks[id] + dir] = idDisp;
+                idsPoss[idDisp] = idsPoss[idDisp] + distance;
+
+                // change the form input values
+                $("input[name='"+id+"']").attr("value",idsRanks[id]);
+                $("input[name='"+idDisp+"']").attr("value",idsRanks[idDisp]);
+
+                // change the rank display number
+                $("font.rankDisp#el"+id).html(idsRanks[id]+1);
+                $("font.rankDisp#el"+idDisp).html(idsRanks[idDisp]+1);
+
+                // move them physically
+                $(".rankElement#el"+id).animate({top:idsPoss[id]+"px"},speed);
+                  $(".rankElement#el"+idDisp).animate({top:idsPoss[idDisp]+"px"},speed);
+              }
+              });
         });
-        </script>           
+        $(document).ready(function() {
+        $(".js-example-basic-single").select2();
+        });
+        </script>          
         </body>
 </html>
