@@ -126,7 +126,7 @@ def make_constraints_club():
         constraints.ec_list=ec_list
         for ix in range(0, len(ec_list)):
                 key = ec_list[ix]
-                constraints.ec_dict[key]= int(totals.ec_dict[key]/NUM_CLUBS)+1
+                constraints.ec_dict[key]= int(totals.ec_dict[key]/NUM_CLUBS)+2
                 
 def make_entries():
         ix=0
@@ -180,34 +180,36 @@ def sort (curr):
         for ix in clublist:
                 if constraints_work(entry, clubs[ix]):
                         clubs[ix].put_in(entry)
+                        #print "club ", ix, " added ", entry.emails
                         entry.clubIX=ix
                         if (sort(curr+1)):
                                 return True
                         else:
                                 clubs[ix].remove(entry)
-##        if entry.clubIX!=-1:
-##                clubs[ix].remove(entry)
+                                #print "removed ", entry.emails, "\n"
         return False
 
 def constraints_work(entry, club):
+        global clubs
         global constraints
         if len(entry.names)==1:
                 grade = entry.grades[0]
                 gr_const = 1+club.grades[grade]
-                if(gr_const > constraints.grades[grade]):
+                if gr_const > constraints.grades[grade]:
                         return False
                 ge = entry.genders[0]
                 ge_const = 1+club.genders[ge]
-                if(ge_const >constraints.genders[ge]):
+                if ge_const >constraints.genders[ge]:
                         return False
         else:
                 for i in range(0, 4):
                         gr_const = club.grades[i]+entry.grades[i]
-                        if(gr_const > constraints.grades[i]):
+                        if gr_const > constraints.grades[i]:
+                                #print "gr const is ", gr_const, "constraint is ", constraints.grades[i]
                                 return False
                 for j in range(0, 3):
                         ge_const =club.genders[j] + entry.genders[j]
-                        if(ge_const >constraints.genders[j]):
+                        if ge_const >constraints.genders[j]:
                                 return False
         for ec in entry.ec_list:
                 if ec in club.ec_dict and  entry.ec_dict[ec]+club.ec_dict[ec]>constraints.ec_dict[ec]:
@@ -218,9 +220,10 @@ def test():
         global entries
         global clubs
         for entry in entries:
-                print entry.names, ":"
-                print "\t their clublist was", entry.clublist
-                print "\tin club", entry.clubIX
+                print (entry.emails, ":")
+                #IF CLUB LIST IS BLANK, the captain didn't spell his email correctly
+                print ("\t their clublist was", entry.clublist)
+                print ("\tin club", entry.clubIX)
                 
 def is_there_a_solution():
         global constraints
@@ -237,52 +240,54 @@ def a_print_pretty():
         club_names = ["Club 0", "Club 1", "Club 2"]
         for ix in range(NUM_CLUBS):
                 club=clubs[ix]
-                print "In", club_names[ix], ":"
+                print ("In", club_names[ix], ":")
                 for i in range(len(club.names)):
-                        print "\t", club.names[i], " <", club.emails[i], ">"
+                        print ("\t", club.names[i], " <", club.emails[i], ">")
                 
 
 def b_print_pretty():
         global totals
-        print "In the applicant pool, there are:"
-        print "\t", totals.grades[0], "people in grade 0,", totals.grades[1], "in grade 1,", totals.grades[2], "in grade 2,", "and", totals.grades[3], "in grade 3;"
-        print "\t", totals.genders[0], "people of gender 0,", totals.genders[1], "of gender 1,", "and", totals.genders[2], "of gender 2;"
+        print ("In the applicant pool, there are:")
+        print ("\t", totals.grades[0], "people in grade 0,", totals.grades[1], "in grade 1,", totals.grades[2], "in grade 2,", "and", totals.grades[3], "in grade 3;")
+        print ("\t", totals.genders[0], "people of gender 0,", totals.genders[1], "of gender 1,", "and", totals.genders[2], "of gender 2;")
         for ec in totals.ec_list:
                 num_people=totals.ec_dict[ec]
                 if num_people==1:
-                        print "\t1 person in extra-curricular activity #", ec
+                        print ("\t1 person in extra-curricular activity #", ec)
                 else:
-                        print "\t", num_people, "people in extra-curricular activity #", ec
+                        print ("\t", num_people, "people in extra-curricular activity #", ec)
         global entries
         global groups
         groups_length = len(groups)
         students_length = len(entries)-groups_length
         if students_length>0:
-                print "Individual Applicants:"
+                print ("Individual Applicants:")
                 for ix in range(students_length):
                         entry=entries[ix]
-                        print "\t id:", entry._id
-                        print "\t\t grade:", entry.grades[0]
-                        print "\t\t gender:", entry.genders[0]
+                        print ("\t id:", entry._id)
+                        print ("Ranked Branches:", entry.clublist)
+                        print ("\t\t grade:", entry.grades[0])
+                        print ("\t\t gender:", entry.genders[0])
                         ec_string ="\t\t extra-curricular activities:"
                         for ec in entry.ec_list:
                                 ec_name = str(ec)+", "
                                 ec_string+=ec_name
-                        print ec_string
+                        print (ec_string)
         if groups_length>0:
                 #group ID is captain's ID
-                print "Group Applicants:"
+                print ("Group Applicants:")
                 for ix in range(groups_length):
                         entry=groups[ix]
-                        print "\t Group:", entry._id
-                        print "\t\t", entry.grades[0], "people in grade 0,", entry.grades[1], "in grade 1,", entry.grades[2], "in grade 2,", "and", entry.grades[3], "in grade 3;"
-                        print "\t\t", entry.genders[0], "people of gender 0,", entry.genders[1], "of gender 1,", "and", entry.genders[2], "of gender 2;"
+                        print ("\t Group:", entry._id)
+                        print ("\t\tRanked Branches:", entry.clublist)
+                        print ("\t\t", entry.grades[0], "people in grade 0,", entry.grades[1], "in grade 1,", entry.grades[2], "in grade 2,", "and", entry.grades[3], "in grade 3;")
+                        print ("\t\t", entry.genders[0], "people of gender 0,", entry.genders[1], "of gender 1,", "and", entry.genders[2], "of gender 2;")
                         for ec in entry.ec_list:
                                 num_people=entry.ec_dict[ec]
                                 if num_people==1:
-                                        print "\t\t1 person in extra-curricular activity #", ec
+                                        print ("\t\t1 person in extra-curricular activity #", ec)
                                 else:
-                                        print num_people, "\t\tpeople in extra-curricular activity #", ec
+                                        print (num_people, "\t\tpeople in extra-curricular activity #", ec)
                         
         
 def main ():
@@ -291,7 +296,7 @@ def main ():
         append_groups()
         sort(0)
         test()
-        a_print_pretty()
+        #b_print_pretty()
 
 if __name__ == '__main__':
         main()

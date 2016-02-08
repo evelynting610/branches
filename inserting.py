@@ -3,42 +3,47 @@ from pymongo import MongoClient
 client=MongoClient('localhost', 27017)
 db=client.socialclubs
 participants = db.participants
+users = db.users
 
 # creates the application
 app= Flask(__name__)
 #application.config.from_object(__name__)
 app.config.from_envvar('FLASKR_SETTINGS', silent=True)
 
-users = set()
-groups = dict()
+##users = set()
+##groups = dict()
 error_message= ""
 
 @app.route('/')
 def starting_page():
+    global error_message
+    error_message=""
     return render_template('index.html', error_message=error_message)
 
 #This info could all be gotten from Mongo
 def isValid(email, captain_email):
     global error_message
-    global users
-    global groups
     username_end = len(email)-12
     username = email[0 : username_end]
-    if username in users:
-        error_message+="You already have a form on file.  Please contact the Social Club Work Group if you would like to remove your former entry and resubmit"
+
+    if users.find_one({ "username" : username}) != None:
+        error_message+="You already have a form on file.  Please contact the Branches Work Group if you would like to remove your former entry and resubmit"
         return False
     else:
         print(username)
-        users.add(username)
+        users.insert({"username" : username})
+        
     if captain_email != "":
-        if captain_email in groups:
-            member_list = groups[captain_email]
-            if len(member_list)==4:  #This number may change
-                error_message+="Sorry.  There are already 4 people in that group"
+        group_doc = users.find_one({ "captain_email" : captain_email})
+        if group_doc != None:
+            member_list = group_doc['member_list']
+            if len(member_list)==3:  #This number may change
+                error_message+="Sorry.  There are already 3 people in that group"
                 return False
+            member_list.append(username)
+            users.update_one( {"captain_email" : captain_email}, {'$set': {"member_list": member_list}})
         else:
-            groups[captain_email] = list()
-        groups[captain_email].append(username)
+            users.insert({ "captain_email" : captain_email, "member_list" : [username] })
     return True
 
 @app.route('/completed', methods = ['POST'])
