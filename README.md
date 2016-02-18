@@ -1,1 +1,4 @@
-# socialclubs
+In recent years, Amherst students have expressed concern that our campus is comprised of many exclusive cliques.  To address this problem, a few students proposed instating “social clubs” to provide groups for those who didn’t have friends or wanted to make more friends.  The student body voted to implement social clubs in this coming semester.
+
+To sort students into social clubs, I coded a Python on Flask app that gets students’ information via a web form and then plugs it into my constrained sorting algorithm.  The constraints are in place to foster diverse interactions within the clubs.  The diversity of the applicant pool must be reflected in each club.  Thus, if 100 people sign up for 5 social clubs and 50 of them are women and 50 are men, there should be around 10 men and women in each club.  Additionally, students are allowed to rank their favorite clubs, and the algorithm must optimize these rankings.  With so many objectives, this algorithm was fun to figure out.  
+
