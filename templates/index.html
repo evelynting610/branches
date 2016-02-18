@@ -27,9 +27,11 @@
             return false;
           }
           var captainEmail = document.forms["socialClubsForm"]["captain"].value;
-          if(captainEmail!=""){
+          var numInClubs = $('input[name="num_in_group"]:checked').val();
+          console.log(numInClubs);
+          
+          if (numInClubs==2 || numInClubs==3){
             var start = captainEmail.length-11;
-            console.log(captainEmail.substring(start, captainEmail.length));
             if (captainEmail.substring(start, captainEmail.length)!="amherst.edu") {
                 alert("Captain email must be a valid AMHERST email");
                 return false;
@@ -42,10 +44,10 @@
             <form name= "socialClubsForm" action="/completed" onsubmit="return validateForm()" method = "post">
                 <h2>The Sorting Hat</h2>
                 <br>
-                  <p style = "color: red">{{error_message}}</p>
+                  <p style = "color: red; padding-left: 10%">{{error_message}}</p>
                     <h4>Full name: <input class="participant" type="text" name="name"></h4>
-                    <!--<h4>Email: <input class="participant" type="text" name="email" value = "{{ request.environ.get('mail') }}" readonly="readonly"></h4>-->
-                    <h4>Email: <input class="participant" type="text" name="email"></h4>
+                    <h4>Email: <input class="participant" type="text" name="email" value = "{{ request.environ.get('mail') }}" readonly="readonly"></h4>
+                    <!--<h4>Email: <input class="participant" type="text" name="email"></h4>-->
                     <h4>Class Of:&nbsp;&nbsp;&nbsp;&nbsp;   
                         <select name = "class" class="js-example-basic-single">
                           <option value=-1></option>
@@ -685,13 +687,13 @@
                         </select>
                     </h4>
                     <br>
-                <h4>Rank your Club Preferences by clicking the Blue Arrows</h4>
+                <h4>Rank your Club Preferences by clicking the Purple Arrows</h4>
                 <div class = "rankContainer">
                   <div class = "rankElement" id = "el0">
                     <input type="hidden" name="0">
                     <font class = "rankDisp" id = "el0">1</font>
                     &nbsp;&nbsp;&nbsp;
-                    Club 1
+                    The 301 Branch
                     <b class = "down">&nbsp;V</b>
                     <b class = "up">&#923;&nbsp;</b>
                   </div>
@@ -699,7 +701,7 @@
                     <input type="hidden" name="1">
                     <font class = "rankDisp" id = "el1">2</font>
                     &nbsp;&nbsp;&nbsp;
-                    Club 2
+                    The Ailurus Branch
                     <b class = "down">&nbsp;V</b>
                     <b class = "up">&#923;&nbsp;</b>
                   </div>
@@ -707,15 +709,40 @@
                     <input type="hidden" name="2">
                     <font class = "rankDisp" id = "el2">3</font>
                     &nbsp;&nbsp;&nbsp;
-                    Club 3
+                    The Buena Vista Branch
+                    <b class = "down">&nbsp;V</b>
+                    <b class = "up">&#923;&nbsp;</b>
+                  </div>
+                  <div class = "rankElement" id = "el3">
+                    <input type="hidden" name="3">
+                    <font class = "rankDisp" id = "el3">4</font>
+                    &nbsp;&nbsp;&nbsp;
+                    The Fourth Wall Branch
+                    <b class = "down">&nbsp;V</b>
+                    <b class = "up">&#923;&nbsp;</b>
+                  </div>
+                  <div class = "rankElement" id = "el4">
+                    <input type="hidden" name="4">
+                    <font class = "rankDisp" id = "el4">5</font>
+                    &nbsp;&nbsp;&nbsp;
+                    The SOS (Save our Social Life) Branch
                     <b class = "down">&nbsp;V</b>
                     <b class = "up">&#923;&nbsp;</b>
                   </div>
                 </div>
                 <br>
+                <h4>I am applying as a...</h4>         <!-- questions written in h4-->
+                    <ul style="list-style-type: none;">
+                        <li><input type="radio" name="num_in_group" value=2 onclick="showCaptain()" checked="checked">  member of a pair</li>
+                        <li><input type="radio" name="num_in_group" value=3 onclick="showCaptain()">  member of a group of 3</li>
+                        <li><input type="radio" name="num_in_group" value=1 onclick="hideCaptain()">  individual</li>
+                    </ul>
+                <br>
+                <div id = "captain">
                 <h4>Amherst Email of Group Captain <input class="code" type="text" name="captain"></h4>
-                <br><br>
-                <input style = "width: 20%; border: 2px solid #85ADFF; font-size: 1em; color: #85ADFF; font-weight: bold" type="submit" value="Submit">
+                <br>
+                </div><br>
+                <input style = "width: 20%; margin-left: 10%; border: 2px solid #9900ff; font-size: 1em; color: #9900ff; font-weight: bold" type="submit" value="Submit">
                 </form>
                 <br><br><br>
 
@@ -816,6 +843,12 @@
         $(document).ready(function() {
         $(".js-example-basic-single").select2();
         });
+        function hideCaptain() {
+          document.getElementById("captain").style.display = "none";
+        }
+        function showCaptain() {
+          document.getElementById("captain").style.display = "inline";
+        }
         </script>          
         </body>
 </html>

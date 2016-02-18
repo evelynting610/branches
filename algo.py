@@ -2,14 +2,14 @@ from pymongo import MongoClient
 client=MongoClient('localhost', 27017)
 db=client.socialclubs
 participants=db.participants
-cursor = db.participants.find()
+earlybirds = db.earlybirds
 
 #this may change
-#Also FIX club_names once you know club names
-NUM_CLUBS=3
+NUM_CLUBS=5
 groups = list()
 entries = list()
 clubs = list()
+email_to_clublist = dict()
 
 class Club(object):
         """A class that turns clubs into objects"""
@@ -32,8 +32,8 @@ class Club(object):
         def put_in(self, entry):
                 name_length = len(entry.names)
                 if name_length==1:
-                        self.names.append(entry.names)
-                        self.emails.append(entry.emails)
+                        self.names.append(entry.names[0])
+                        self.emails.append(entry.emails[0])
                         self.grades[entry.grades[0]]+=1
                         self.genders[entry.genders[0]]+=1
                 else:
@@ -127,10 +127,12 @@ def make_constraints_club():
         for ix in range(0, len(ec_list)):
                 key = ec_list[ix]
                 constraints.ec_dict[key]= int(totals.ec_dict[key]/NUM_CLUBS)+2
-                
-def make_entries():
-        ix=0
-        dict_from_capt_to_ix = dict()
+
+dict_from_capt_to_ix = dict()
+index=0
+def make_entries(cursor):
+        global index
+        global email_to_clublist
         for entry in cursor:
                 _id = entry['_id']
                 name = entry['name']
@@ -149,6 +151,7 @@ def make_entries():
                         ec_dict[ec2]=1
                 clublist = entry['ranked_clubs']
                 capt_email = entry['group']
+                email_to_clublist[email] = clublist
                 if(capt_email==""):
                         global entries
                         s = Entry(_id, [name], [email], [grade], [gender], ec_list, ec_dict, clublist, -1)
@@ -157,8 +160,8 @@ def make_entries():
                         global groups
                         if capt_email not in dict_from_capt_to_ix:
                                 groups.append(Entry("", list(), list(), [0,0,0,0], [0,0,0], list(), dict(), list(), -1))
-                                dict_from_capt_to_ix[capt_email]=ix
-                                ix+=1
+                                dict_from_capt_to_ix[capt_email]=index
+                                index+=1
                         capt_ix = dict_from_capt_to_ix[capt_email]
                         if email==capt_email:
                                 groups[capt_ix].clublist=clublist
@@ -167,7 +170,6 @@ def make_entries():
                         groups[capt_ix].add_to_group(name, email, grade, gender, ec_list)
                 global totals
                 totals.calc_totals(grade, gender, ec_list)
-        make_constraints_club()
 
 
 def sort (curr):
@@ -178,6 +180,7 @@ def sort (curr):
         entry = entries[curr]
         clublist = entry.clublist
         for ix in clublist:
+                ix = int(ix)
                 if constraints_work(entry, clubs[ix]):
                         clubs[ix].put_in(entry)
                         #print "club ", ix, " added ", entry.emails
@@ -237,12 +240,36 @@ def is_there_a_solution():
 
 def a_print_pretty():
         global clubs
-        club_names = ["Club 0", "Club 1", "Club 2"]
+        global email_to_clublist
+        club_names = ["The 301 Branch", "The Ailurus Branch", "The Buena Vista Branch", "The Fourth Wall Branch", "The SOS Branch"]
+        results = open("results.txt", 'w')
         for ix in range(NUM_CLUBS):
+                num_first_choice=0
+                num_sec_choice = 0
+                num_members=0
                 club=clubs[ix]
-                print ("In", club_names[ix], ":")
+                club_header = "In "+club_names[ix]+" :\n"
+                results.write(club_header)
                 for i in range(len(club.names)):
-                        print ("\t", club.names[i], " <", club.emails[i], ">")
+                        if club.names[i]!="group":
+                                num_members+=1
+                                email = club.emails[i]
+                                clublist = email_to_clublist[email]
+                                if clublist[0]==ix:
+                                        num_first_choice+=1
+                                if clublist[1]==ix:
+                                        num_sec_choice+=1
+                                member = "\t"+club.names[i]+" <"+email+">\n"
+                                results.write(member)
+                first_choice = str(num_first_choice)+" out of "+str(num_members)+" marked this as their first choice\n"
+                results.write(first_choice)
+                second_choice = str(num_sec_choice)+" out of "+str(num_members)+" marked this as their SECOND choice\n"
+                results.write(second_choice)
+                gender = "Gender: "+str(club.genders[0])+" women and "+str(club.genders[2])+" men.\n"
+                results.write(gender)
+                grade = "Grade:  2016= "+str(club.grades[1])+",  2017= "+str(club.grades[0])+",  2018= "+str(club.grades[3])+",  2019= "+str(club.grades[2])+"\n\n\n"
+                results.write(grade)
+        results.close()
                 
 
 def b_print_pretty():
@@ -292,11 +319,13 @@ def b_print_pretty():
         
 def main ():
         init_clubs()
-        make_entries()
+        make_entries(earlybirds.find())
+        make_entries(participants.find())
+        make_constraints_club()
         append_groups()
         sort(0)
         test()
-        #b_print_pretty()
+        a_print_pretty()
 
 if __name__ == '__main__':
         main()
