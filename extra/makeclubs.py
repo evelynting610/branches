@@ -1,4 +1,3 @@
-
 def read(file):
 	clubs = list()
 	count=0

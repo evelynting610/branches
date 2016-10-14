@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-
+    
     <head>
     <title>AC Branches</title>
     <link rel=stylesheet type=text/css href="../static/stylesheet.css">
@@ -29,7 +29,7 @@
           var captainEmail = document.forms["socialClubsForm"]["captain"].value;
           var numInClubs = $('input[name="num_in_group"]:checked').val();
           console.log(numInClubs);
-
+          
           if (numInClubs==2 || numInClubs==3){
             var start = captainEmail.length-11;
             if (captainEmail.substring(start, captainEmail.length)!="amherst.edu") {
@@ -38,34 +38,32 @@
             }
           }
       }
-    </script>
+    </script> 
     </head>
         <body>
             <form name= "socialClubsForm" action="/completed" onsubmit="return validateForm()" method = "post">
                 <h2>The Sorting Hat</h2>
                 <br>
                   <p style = "color: red; padding-left: 10%">{{error_message}}</p>
-                  <p style = "padding: 0% 6% 3% 6%; font-family: Arial, Helvetica, sans-serif;">The Branches project was initiated by students, for students in response to expressed feelings of social disconnect, lack of opportunities for students of different backgrounds to come together and form meaningful bonds, and demands for a more vibrant social landscape on our campus. Branches will give students a chance to connect with new people in a non-intimidating, inclusive setting and aim to diversify nightlife options, school-wide events, and other activities at Amherst, both for students who choose to join Branches and those who do not. While Branch activities are intended to be enjoyable, please keep in mind that this is a social commitment and that by joining a Branch, you are agreeing to be an important part of this project. Expect each Branch to require only about 1-2 hours of commitment per week.
-                    Please fill out the form below ONLY if you plan to join and commit to one of the Branches throughout this semester, regardless of which Branch you end up in. We would like to remind you that especially this year, all six Branches will operate similarly and have many commonalities and parallels running through the entire system.</p>
                     <h4>Full name: <input class="participant" type="text" name="name"></h4>
                     <h4>Email: <input class="participant" type="text" name="email" value = "{{ request.environ.get('mail') }}" readonly="readonly"></h4>
                     <!--<h4>Email: <input class="participant" type="text" name="email"></h4>-->
-                    <h4>Class Of:&nbsp;&nbsp;&nbsp;&nbsp;
+                    <h4>Class Of:&nbsp;&nbsp;&nbsp;&nbsp;   
                         <select name = "class" class="js-example-basic-single">
                           <option value=-1></option>
-                          <option value=1 >2017 or 2017E</option>
-                          <option value=0 >2018 or 2018E</option>
-                          <option value=3 >2019 or 2019E</option>
-                          <option value=2 >2020 or 2020E</option>
+                          <option value=2016 >2016 or 2017E</option>
+                          <option value=2017 >2017 or 2018E</option>
+                          <option value=2018 >2018 or 2019E</option>
+                          <option value=2019 >2019</option>
                         </select>
                     </h4>
 
-                    <h4>Gender:&nbsp;&nbsp;&nbsp;&nbsp;
+                    <h4>Gender:&nbsp;&nbsp;&nbsp;&nbsp;   
                         <select name = "gender"class="js-example-basic-single">
                           <option value =-1></option>
-                          <option value= 0 >Woman</option>
-                          <option value= 2 >Man</option>
-                          <option value= 1 >Nonbinary</option>
+                          <option value= Woman >Woman</option>
+                          <option value= Man >Man</option>
+                          <option value= Nonbinary >Nonbinary</option>
                         </select>
                     </h4>
                     <h4> Top Extra-Curriculars You Are In &nbsp;&nbsp;&nbsp;&nbsp;
@@ -365,7 +363,7 @@
                           </option>
                           <option value=146>Whistle a Happy Tune
                           </option>
-                          <option value=147>Women in Technology and Science (wits)
+                          <option value=147>Women in Technology and Science
                           </option>
                           <option value=148>Women's Club Soccer
                           </option>
@@ -675,7 +673,7 @@
                           </option>
                           <option value=146>Whistle a Happy Tune
                           </option>
-                          <option value=147>Women in Technology and Science (wits)
+                          <option value=147>Women in Technology and Science
                           </option>
                           <option value=148>Women's Club Soccer
                           </option>
@@ -695,7 +693,7 @@
                     <input type="hidden" name="0">
                     <font class = "rankDisp" id = "el0">1</font>
                     &nbsp;&nbsp;&nbsp;
-                    Red Branch
+                    The 301 Branch
                     <b class = "down">&nbsp;V</b>
                     <b class = "up">&#923;&nbsp;</b>
                   </div>
@@ -703,7 +701,7 @@
                     <input type="hidden" name="1">
                     <font class = "rankDisp" id = "el1">2</font>
                     &nbsp;&nbsp;&nbsp;
-                    Blue Branch
+                    The Ailurus Branch
                     <b class = "down">&nbsp;V</b>
                     <b class = "up">&#923;&nbsp;</b>
                   </div>
@@ -711,7 +709,7 @@
                     <input type="hidden" name="2">
                     <font class = "rankDisp" id = "el2">3</font>
                     &nbsp;&nbsp;&nbsp;
-                    Orange Branch
+                    The Buena Vista Branch
                     <b class = "down">&nbsp;V</b>
                     <b class = "up">&#923;&nbsp;</b>
                   </div>
@@ -719,7 +717,7 @@
                     <input type="hidden" name="3">
                     <font class = "rankDisp" id = "el3">4</font>
                     &nbsp;&nbsp;&nbsp;
-                    Yellow Branch
+                    The Fourth Wall Branch
                     <b class = "down">&nbsp;V</b>
                     <b class = "up">&#923;&nbsp;</b>
                   </div>
@@ -727,15 +725,7 @@
                     <input type="hidden" name="4">
                     <font class = "rankDisp" id = "el4">5</font>
                     &nbsp;&nbsp;&nbsp;
-                    Green Branch
-                    <b class = "down">&nbsp;V</b>
-                    <b class = "up">&#923;&nbsp;</b>
-                  </div>
-                  <div class = "rankElement" id = "el5">
-                    <input type="hidden" name="5">
-                    <font class = "rankDisp" id = "el5">5</font>
-                    &nbsp;&nbsp;&nbsp;
-                    Purple Branch
+                    The SOS (Save our Social Life) Branch
                     <b class = "down">&nbsp;V</b>
                     <b class = "up">&#923;&nbsp;</b>
                   </div>
@@ -793,7 +783,7 @@
               ranksIds[idsRanks[id]] = id;
               idsPoss[id] = idsPoss[id] - distance;
 
-              // move the displaced one up in the variables
+              // move the displaced one up in the variables   
               idsRanks[idDisp] = idsRanks[id] + dir;
               ranksIds[idsRanks[id] + dir] = idDisp;
               idsPoss[idDisp] = idsPoss[idDisp] + distance;
@@ -831,7 +821,7 @@
                 ranksIds[idsRanks[id]] = id;
                 idsPoss[id] = idsPoss[id] - distance;
 
-                // move the displaced one up in the variables
+                // move the displaced one up in the variables   
                 idsRanks[idDisp] = idsRanks[id] + dir;
                 ranksIds[idsRanks[id] + dir] = idDisp;
                 idsPoss[idDisp] = idsPoss[idDisp] + distance;
@@ -859,6 +849,6 @@
         function showCaptain() {
           document.getElementById("captain").style.display = "inline";
         }
-        </script>
+        </script>          
         </body>
 </html>

@@ -1,8 +1,9 @@
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template
 from pymongo import MongoClient
+import time
 client=MongoClient('localhost', 27017)
-db=client.socialclubs
-participants = db.participants
+db=client.branches
+participants = db.f16participants
 users = db.users
 
 # creates the application
@@ -23,7 +24,7 @@ def starting_page():
 ##    if users.find_one({ "username" : username}) != None:
 ##        error_message+="You already have a form on file.  Please contact Evelyn Ting <eting17@amherst.edu> if you would like to remove your former entry and resubmit"
 ##        return False
-##    
+##
 ##    if captain_email != "":
 ##        group_doc = users.find_one({ "captain_email" : captain_email})
 ##        if group_doc != None:
@@ -35,13 +36,14 @@ def starting_page():
 ##            users.update_one( {"captain_email" : captain_email}, {'$set': {"member_list": member_list}})
 ##        else:
 ##            users.insert({ "captain_email" : captain_email, "member_list" : [username] })
-##            
+##
 ##    users.insert({"username" : username})
 ##    return True
 
 @app.route('/completed', methods = ['POST'])
 def insert_participant():
 ##    global error_message
+    NUM_CLUBS = 6
     error_message=""
     email = request.form['email']
     captain= request.form['captain']
@@ -49,9 +51,13 @@ def insert_participant():
     username = email[0 : username_end]
     users.insert({"username" : username})
     rank_dict = dict()
-    for i in range(0, 5):
+    for i in range(NUM_CLUBS):
         key = request.form[str(i)]
         rank_dict[key] = i
+    ranked_clubs = list()
+    for i in range(NUM_CLUBS):
+        ranked_clubs.append(rank_dict[str(i)])
+    localtime = time.asctime( time.localtime(time.time() )  )
     participant = {
         "name": request.form['name'],
         "email": email,
@@ -59,8 +65,9 @@ def insert_participant():
         "gender":request.form['gender'],
         "ec1":request.form['ec1'],
         "ec2": request.form['ec2'],
-        "ranked_clubs": [rank_dict['0'], rank_dict['1'], rank_dict['2'], rank_dict['3'], rank_dict['4']],
+        "ranked_clubs": ranked_clubs,
         "num_in_group": request.form['num_in_group'],
+        "time": localtime,
         "group": captain
         }
     participants.insert(participant)

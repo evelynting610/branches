@@ -1,12 +1,12 @@
 from pymongo import MongoClient
 client=MongoClient('localhost', 27017)
 db=client.socialclubs
-participants = db.copy
+participants = db.participants2
 entries = db.entries
 groups = db.groups
 
 entries.delete_many({})
-#groups.delete_many({})
+groups.delete_many({})
 
 for p in participants.find():
     pemail = p['email']
@@ -26,11 +26,11 @@ for p in participants.find():
                 print("Sorry, ", pemail, " already 3 people in that group")
             member_list.append(pemail)
             entries.update_one( {"captain_email" : captain_email}, {'$set': {"member_list": member_list}})
- #           groups.update_one( {"captain_email" : captain_email}, {'$set': {"member_list": member_list}})
+            groups.update_one( {"captain_email" : captain_email}, {'$set': {"member_list": member_list}})
         else:
             entries.insert({ "captain_email" : captain_email, "member_list" : [pemail] })
             numingroup = int(p['num_in_group'])
- #           groups.insert({ "captain_email" : captain_email, "member_list" : [pemail], "numingroup" : numingroup })
+            groups.insert({ "captain_email" : captain_email, "member_list" : [pemail], "numingroup" : numingroup })
 
         if participants.find_one({"email" : captain_email }) == None:
             print("Captain ", captain_email, " is not in database")

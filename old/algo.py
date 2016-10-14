@@ -2,7 +2,7 @@ from pymongo import MongoClient
 client=MongoClient('localhost', 27017)
 db=client.socialclubs
 participants=db.participants
-earlybirds = db.earlybirds
+#earlybirds = db.earlybirds
 
 #this may change
 NUM_CLUBS=5
@@ -242,7 +242,7 @@ def a_print_pretty():
         global clubs
         global email_to_clublist
         club_names = ["The 301 Branch", "The Ailurus Branch", "The Buena Vista Branch", "The Fourth Wall Branch", "The SOS Branch"]
-        results = open("results.txt", 'w')
+        results = open("round2_results.txt", 'w')
         for ix in range(NUM_CLUBS):
                 num_first_choice=0
                 num_sec_choice = 0
@@ -319,7 +319,7 @@ def b_print_pretty():
         
 def main ():
         init_clubs()
-        make_entries(earlybirds.find())
+        #make_entries(earlybirds.find())
         make_entries(participants.find())
         make_constraints_club()
         append_groups()
