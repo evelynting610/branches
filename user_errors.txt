@@ -1,0 +1,25 @@
+Captain  sobrien18@amherst.edu  is not in database
+group member is  nmqasim18@amherst.edu
+
+
+group  eboynton17@amherst.edu  has  3  not  2
+group  rschwartz19@amherst.edu  has  1  not  3
+group  ddelgado20@amherst.edu  has  2  not  3
+group  sobrien18@amherst.edu  has  1  not  2
+group  sfeldman17@amherst.edu  has  2  not  3
+group  aasarebediako18@amherst.edu  has  1  not  2
+group  hprice18@amherst.edu  has  1  not  2
+group  tsoutham20@amherst.edu  has  2  not  3
+group  jhighland18@amherst.edu  has  2  not  3
+group  lbriones19@amherst.edu  has  2  not  3
+group  bkane17@amherst.edu  has  1  not  2
+group  rvalera17@amherst.edu  has  2  not  3
+group  sxu17@amherst.edu  has  2  not  3
+
+All "groups" where only 1 person filled out form
+rschwartz19@amherst.edu
+sobrien18@amherst.edu
+aasarebediako18@amherst.edu
+hprice18@amherst.edu
+bkane17@amherst.edu
+ehollenberg19@amherst.edu

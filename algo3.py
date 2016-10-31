@@ -1,12 +1,12 @@
 from pymongo import MongoClient
 client=MongoClient('localhost', 27017)
-db=client.socialclubs
-participants=db.participants
+db=client.branches
+participants=db.f16participants
 
 #Change club names
 #this may change
 NUM_CLUBS=6
-club_names = ["first", "second", "third", "fourth", "fifth", "sixth"]
+club_names = ["red", "blue", "orange", "yellow", "green", "purple"]
 groups = list()
 entries = list()
 clubs = list()
@@ -120,9 +120,9 @@ def make_constraints_club():
         global constraints
         global NUM_CLUBS
         for ix in range(0, 3):
-                constraints.genders[ix]= int(totals.genders[ix]/NUM_CLUBS)+2
+                constraints.genders[ix]= int(totals.genders[ix]/NUM_CLUBS)+1
         for ix in range(0, 4):
-                constraints.grades[ix]= int(totals.grades[ix]/NUM_CLUBS)+3
+                constraints.grades[ix]= int(totals.grades[ix]/NUM_CLUBS)+2
         ec_list = totals.ec_list
         constraints.ec_list=ec_list
         for ix in range(0, len(ec_list)):
@@ -244,7 +244,7 @@ def a_print_pretty():
         global clubs
         global email_to_clublist
         global club_names
-        results = open("secondround_results.txt", 'w')
+        results = open("f16_results.txt", 'w')
         for ix in range(NUM_CLUBS):
                 num_first_choice=0
                 num_members=0
@@ -320,8 +320,8 @@ def main ():
         make_constraints_club()
         append_groups()
         sort(0)
-        test()
-        a_print_pretty()
+        #text()
+        b_print_pretty()
 
 if __name__ == '__main__':
         main()

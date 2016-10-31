@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 client=MongoClient('localhost', 27017)
-db=client.socialclubs
-participants = db.participants2
+db=client.branches
+participants = db.f16participants
 entries = db.entries
 groups = db.groups
 
@@ -11,7 +11,7 @@ groups.delete_many({})
 for p in participants.find():
     pemail = p['email']
     captain_email = p['group']
-    
+
     if entries.find_one({"email" : pemail}) != None:
         print (pemail, "has been entered twice")
 
@@ -35,7 +35,7 @@ for p in participants.find():
         if participants.find_one({"email" : captain_email }) == None:
             print("Captain ", captain_email, " is not in database")
             print("group member is ", pemail)
-            
+
     entries.insert({"email" : pemail})
 
 for g in groups.find():
@@ -44,3 +44,9 @@ for g in groups.find():
 
     if num_members!=numingroup:
         print("group ", g['captain_email'], " has ", num_members, " not ", numingroup)
+
+print("all groups with one person")
+for m in groups.find():
+    num_members = len(m['member_list'])
+    if num_members == 1:
+        print(m['captain_email'])
