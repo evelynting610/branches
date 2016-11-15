@@ -13,36 +13,31 @@ body *{
 }
 
 h2{
+	width: 40%;
     font-family: serif;
     font-weight: bold;
-    width: 720px;
-    padding: 40px;
-    background-color: #b366ff;
+    border: 2px solid #207cca;
+    border-radius: 20px;
+    padding: 40px 20px;
+    background-color: #85ADFF;
     text-align: center;
 }
 
 form {
-        padding: 20px 0px 50px 0px;
-        width: 800px;
+        padding: 20px 0px 50px 50px;
+        width: 750px;
         height: auto;
         margin: auto;
 }
 
+form h2{
+    margin: 20px auto;
+    margin-right: 228px;
+}
 
 h4{
     font-family: serif;
-    /*color: #5C8AE6;*/
-    color: #9900ff;
-}
-
-form h4{
-    padding-left: 10%;
-}
-
-form li {
-    color: #9900ff;
-    padding-left: 10%;
-    display: inline;
+    color: #5C8AE6;
 }
 
 .participant {
@@ -53,6 +48,10 @@ form li {
 .code {
         width: 150px;
         margin: 0px;
+}
+
+.submit {
+    width: 100px;
 }
 
 /* up button */
@@ -84,7 +83,7 @@ font-weight: bold;
 /* Container div for Rank, HTML form rank selector */
 .rankContainer
 {
-margin-left: 22%;
+margin-left: 70px;
 position: relative;
 width: 300px; height: auto;
 }
@@ -97,8 +96,8 @@ width: 400px; height: auto;
 margin: 0px;
 padding: 3px;
 color: #000000;
-border: 1px solid #9900ff;
+border: 1px solid #85ADFF;
 }
 .rankElement b{
-    color: #9900ff;
+    color: #85ADFF;
 }
